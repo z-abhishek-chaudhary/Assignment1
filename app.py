@@ -30,10 +30,11 @@ class Main:
         list.append(age)
 
         gender = input("\nEnter your gender: [M/F] ").upper()
-        if gender not in ("M","F"):
+        while gender not in ("M","F"):
             print("\n-----> Invalid response, Please try again <-----")
             time.sleep(2)
-            self.register()
+            gender = input("\nEnter your gender: [M/F] ").upper()
+
         if gender == 'M':
             gender = 'Male'
         else: gender = 'Female'
@@ -45,7 +46,7 @@ class Main:
         if differentlyAbled not in ("T","F"):
             print("\n-----> Invalid response, Please try again <-----")
             time.sleep(2)
-            self.register()
+            differentlyAbled = input("\nAre you Differently Abled: [T/F] ").upper()
 
 
         if differentlyAbled == 'T':
@@ -62,6 +63,11 @@ class Main:
         available = True
         print("\n\nPlease select your preferred stream from the following:-")
         course = int(input("\nMaths [Enter 1]\nBiology [Enter 2]\nCommerce [Enter 3]\n\nYour Response: " ))
+        while course not in [1,2,3]:
+            print("\n-----> Invalid response, Please try again <-----")
+            time.sleep(2)
+            course = int(input("\nMaths [Enter 1]\nBiology [Enter 2]\nCommerce [Enter 3]\n\nYour Response: " ))
+
         if course == 1:
             if self.math == 0:
                 genralAvailable = False
@@ -147,12 +153,13 @@ class Main:
         print("-> New Registration [Enter 1]\n\n-> Student Information [Enter 2]\n\n-> Check Remaining Seats [Enter 3]\n")
         newEntry = int(input("Your Response: "))
         entry = (1,2,3)
-        if(newEntry not in entry):
+        while (newEntry not in entry):
             os.system('clear')
             print("\n\n")
             print("----------> Please Enter the Valid Entry <---------- ")
             time.sleep(2)
             self.mainMenu()
+
         if newEntry == 1:
             self.register()
         if newEntry == 2:
@@ -197,3 +204,130 @@ class Main:
 
 class_instance = Main()
 class_instance.mainMenu()
+
+class Register:
+    def register():
+        os.system('clear')
+        list = []
+        print("------------------------------")
+        print("-> Please Enter the Details: ")
+        print("------------------------------\n")
+        name = input("\n\nEnter your name: ")
+        list.append(name)
+
+        age = int(input("\nEnter your age: "))
+        list.append(age)
+
+        gender = input("\nEnter your gender: [M/F] ").upper()
+        while gender not in ("M","F"):
+            print("\n-----> Invalid response, Please try again <-----")
+            time.sleep(2)
+            gender = input("\nEnter your gender: [M/F] ").upper()
+
+        if gender == 'M':
+            gender = 'Male'
+        else: gender = 'Female'
+        list.append(gender)
+
+
+
+        differentlyAbled = input("\nAre you Differently Abled: [T/F] ").upper()
+        if differentlyAbled not in ("T","F"):
+            print("\n-----> Invalid response, Please try again <-----")
+            time.sleep(2)
+            differentlyAbled = input("\nAre you Differently Abled: [T/F] ").upper()
+
+
+        if differentlyAbled == 'T':
+            differentlyAbled = True
+            list.append("Differently Abled")
+        else: 
+            differentlyAbled = False
+            list.append("Not Differently Abled")
+
+
+
+        genralAvailable = True
+        specialAvailable = True
+        available = True
+        print("\n\nPlease select your preferred stream from the following:-")
+        course = int(input("\nMaths [Enter 1]\nBiology [Enter 2]\nCommerce [Enter 3]\n\nYour Response: " ))
+        while course not in [1,2,3]:
+            print("\n-----> Invalid response, Please try again <-----")
+            time.sleep(2)
+            course = int(input("\nMaths [Enter 1]\nBiology [Enter 2]\nCommerce [Enter 3]\n\nYour Response: " ))
+
+        if course == 1:
+            if Main.math == 0:
+                genralAvailable = False
+            if Main.reserveMath == 0:
+                specialAvailable = False
+
+            if differentlyAbled and specialAvailable:
+                Main.reserveMath -= 1
+            elif differentlyAbled and specialAvailable == False and genralAvailable:
+                Main.math -= 1
+            elif differentlyAbled and not genralAvailable and not specialAvailable:
+                available = False
+            elif not differentlyAbled and genralAvailable:
+                Main.math -= 1
+            elif not differentlyAbled and not genralAvailable:
+                available = False
+            course = 'Maths'
+
+            
+
+        elif course == 2:
+            if Main.biology == 0:
+                genralAvailable = False
+            if Main.reserveBiology == 0:
+                specialAvailable = False
+
+            if differentlyAbled and specialAvailable:
+                Main.reserveBiology -= 1
+            elif differentlyAbled and specialAvailable == False and genralAvailable:
+                Main.biology -= 1
+            elif differentlyAbled and not genralAvailable and not specialAvailable:
+                available = False
+            elif not differentlyAbled and genralAvailable:
+                Main.biology -= 1
+            elif not differentlyAbled and not genralAvailable:
+                available = False
+            course = 'Biology'
+
+
+
+        elif course == 3:
+            if Main.commerce == 0:
+                genralAvailable = False
+            if Main.reserveCommerce == 0:
+                specialAvailable = False
+
+            if differentlyAbled and specialAvailable:
+                Main.reserveCommerce -= 1
+            elif differentlyAbled and specialAvailable == False and genralAvailable:
+                Main.commerce -= 1
+            elif differentlyAbled and not genralAvailable and not specialAvailable:
+                available = False
+            elif not differentlyAbled and genralAvailable:
+                Main.commerce -= 1
+            elif not differentlyAbled and not genralAvailable:
+                available = False
+            course = 'Commerce'
+
+        else:
+            print("Invaild Entry, Please Try Again")
+            time.sleep(2)
+            Main.register()
+    
+        list.append(course)
+        
+
+        if(available):
+            print(f"\n\n********************* You are successfully registered. *********************\n")
+        else:
+            print(f"\n\n------ Seats are not available for your selected {course} course. ------")
+
+        Main.studentData.append(list)
+        input("\nPress Enter to Exit ")
+        Main.mainMenu()
